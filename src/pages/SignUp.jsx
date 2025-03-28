@@ -4,7 +4,11 @@ import { useForm } from "react-hook-form"
 import CardAuth from "../components/cardAuth"
 import { Field, Input, Stack } from "@chakra-ui/react"
 import { usernameValidation, emailValidation, passwordValidation } from "../lib/validation"
+import { useSignUpMutation } from "../services/auth"
+import useRedirect from "../hooks/useRedirect"
+
 const SignUp = () => {
+    const [signUp, { isError, error, isSuccess }] = useSignUpMutation()
     const {
         handleSubmit,
         register,
@@ -12,14 +16,11 @@ const SignUp = () => {
     } = useForm()
 
     function onSubmit(values) {
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                alert(JSON.stringify(values, null, 2))
-                resolve()
-            }, 0)
-        })
+        signUp(values)
+        return null
     }
 
+    useRedirect(isSuccess, '/signin')
 
 
     return <CardAuth handleSubmit={handleSubmit} onSubmit={onSubmit} title="РЕЄСТРАЦІЯ" description="Спробуй нові відчуття" link="/signin" linkText="Вхід" buttonText="Зареєструватися" >
@@ -49,6 +50,10 @@ const SignUp = () => {
                 {errors.password && <Field.ErrorText>{errors.password.message}</Field.ErrorText>}
             </Field.Root>
         </Stack>
+        {isError && <Alert.Root width={"300px"} position={"fixed"} bottom={"10px"} right={"10px"} status="error">
+            <Alert.Indicator />
+            <Alert.Title>{error.data.message}</Alert.Title>
+        </Alert.Root>}   
     </CardAuth>
 };
 

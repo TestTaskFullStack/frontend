@@ -50,15 +50,15 @@
 body {
   margin: 0;
   display: flex;
-  place-items: center;
   min-width: 320px;
   min-height: 100vh;
   font-family: "Neue Machina", sans-serif;
 }
 
-h1 {
+h1, h2, h3, h4, h5, h6 {
   font-size: 3.2em;
   line-height: 1.1;
+  font-family: "Neue Machina", sans-serif;
 }
 
 
@@ -73,3 +73,12 @@ button:focus-visible {
   text-decoration: underline ;
   color: var(--chakra-colors-primary) ;
 }
+
+.chakra-tabs__trigger  {
+  color: white;
+}
+.chakra-tabs__trigger::before {
+  background-color: white;
+}
+
+

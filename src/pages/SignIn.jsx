@@ -1,11 +1,13 @@
 
-import ButtonUI from "../components/button"
 import { useForm } from "react-hook-form"
 import CardAuth from "../components/cardAuth"
-import { Field, Input, Stack } from "@chakra-ui/react"
+import { Alert, Box, Field, Input, Stack } from "@chakra-ui/react"
 import { usernameValidation } from "../lib/validation"
+import { useSignInMutation } from "../services/auth"
+import useRedirect from "../hooks/useRedirect"
 
 const SignIn = () => {
+    const [signIn, { isError, error, isSuccess }] = useSignInMutation()
     const {
         handleSubmit,
         register,
@@ -13,13 +15,11 @@ const SignIn = () => {
     } = useForm()
 
     function onSubmit(values) {
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                alert(JSON.stringify(values, null, 2))
-                resolve()
-            }, 0)
-        })
+        signIn(values)
+        return null
     }
+
+    useRedirect(isSuccess, '/')
 
 
 
@@ -44,7 +44,12 @@ const SignIn = () => {
                 {errors.password && <Field.ErrorText>{errors.password.message}</Field.ErrorText>}
             </Field.Root>
         </Stack>
+        {isError && <Alert.Root width={"300px"} position={"fixed"} bottom={"10px"} right={"10px"} status="error">
+            <Alert.Indicator />
+            <Alert.Title>{error.data.message}</Alert.Title>
+        </Alert.Root>}
     </CardAuth>
+   
 };
 
 export default SignIn;

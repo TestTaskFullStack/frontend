@@ -1,13 +1,17 @@
 
 import { useForm } from "react-hook-form"
-import CardAuth from "../components/cardAuth"
+import CardAuth from "./components/cardAuth"
 import { Alert, Box, Field, Input, Stack } from "@chakra-ui/react"
-import { usernameValidation } from "../lib/validation"
-import { useSignInMutation } from "../services/auth"
-import useRedirect from "../hooks/useRedirect"
+import { usernameValidation } from "../../lib/validation"
+import { useSignInMutation } from "../../services/auth"
+import useRedirect from "../../hooks/useRedirect"
+import { useEffect } from "react"
+import { Toaster } from "../../components/ui/toaster"
+import useToasterError from "./hooks/useToasterError"
 
 const SignIn = () => {
-    const [signIn, { isError, error, isSuccess }] = useSignInMutation()
+    const [signIn, { isError, error, isSuccess, data }] = useSignInMutation()
+
     const {
         handleSubmit,
         register,
@@ -19,8 +23,15 @@ const SignIn = () => {
         return null
     }
 
-    useRedirect(isSuccess, '/')
 
+    useRedirect(isSuccess, '/')
+    useToasterError(isError, error)
+    useEffect(() => {
+        if (isSuccess) {
+            localStorage.setItem("auth_token", data.accessToken)
+        }
+    }, [data, isSuccess, isError, error])
+    
 
 
     return <CardAuth handleSubmit={handleSubmit} onSubmit={onSubmit} title="ВХІД" description="Спробуй нові відчуття" link="/signup" linkText="Зареєструватися" buttonText="Вхід" >
@@ -38,18 +49,15 @@ const SignIn = () => {
                     Пароль
                     <Field.RequiredIndicator />
                 </Field.Label>
-                <Input  {...register('password', {
+                <Input type="password" {...register('password', {
                     required: 'Це поле є обов\'язковим',
                 })} />
                 {errors.password && <Field.ErrorText>{errors.password.message}</Field.ErrorText>}
             </Field.Root>
         </Stack>
-        {isError && <Alert.Root width={"300px"} position={"fixed"} bottom={"10px"} right={"10px"} status="error">
-            <Alert.Indicator />
-            <Alert.Title>{error.data.message}</Alert.Title>
-        </Alert.Root>}
+    
     </CardAuth>
-   
+
 };
 
 export default SignIn;

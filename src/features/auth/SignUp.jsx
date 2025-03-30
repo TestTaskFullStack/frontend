@@ -1,12 +1,11 @@
 
-import ButtonUI from "../components/button"
 import { useForm } from "react-hook-form"
-import CardAuth from "../components/cardAuth"
+import CardAuth from "./components/cardAuth"
 import { Field, Input, Stack } from "@chakra-ui/react"
-import { usernameValidation, emailValidation, passwordValidation } from "../lib/validation"
-import { useSignUpMutation } from "../services/auth"
-import useRedirect from "../hooks/useRedirect"
-
+import { usernameValidation, emailValidation, passwordValidation } from "../../lib/validation"
+import { useSignUpMutation } from "../../services/auth"
+import useRedirect from "../../hooks/useRedirect"
+import useToasterError from "./hooks/useToasterError"
 const SignUp = () => {
     const [signUp, { isError, error, isSuccess }] = useSignUpMutation()
     const {
@@ -21,7 +20,7 @@ const SignUp = () => {
     }
 
     useRedirect(isSuccess, '/signin')
-
+    useToasterError(isError, error)
 
     return <CardAuth handleSubmit={handleSubmit} onSubmit={onSubmit} title="РЕЄСТРАЦІЯ" description="Спробуй нові відчуття" link="/signin" linkText="Вхід" buttonText="Зареєструватися" >
         <Stack gap="4" w="full">
@@ -46,14 +45,11 @@ const SignUp = () => {
                     Пароль
                     <Field.RequiredIndicator />
                 </Field.Label>
-                <Input  {...register('password', passwordValidation)} />
+                <Input  type="password" {...register('password', passwordValidation)} />
                 {errors.password && <Field.ErrorText>{errors.password.message}</Field.ErrorText>}
             </Field.Root>
-        </Stack>
-        {isError && <Alert.Root width={"300px"} position={"fixed"} bottom={"10px"} right={"10px"} status="error">
-            <Alert.Indicator />
-            <Alert.Title>{error.data.message}</Alert.Title>
-        </Alert.Root>}   
+        </Stack>  
+        
     </CardAuth>
 };
 

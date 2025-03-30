@@ -1,15 +1,11 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import SignUp from '../pages/SignUp'
-
-
-
-
+import { ERROR_CODES } from '../../config/constants'
 export const authApi = createApi({
+  reducerPath: 'authApi',
   baseQuery: fetchBaseQuery({
     baseUrl: import.meta.env.VITE_BACKEND_URL + '/api/auth',
     prepareHeaders: (headers) => {
-      // By default, if we have a token in the store, let's use that for authenticated requests
-      const token = ""
+      const token = localStorage.getItem('auth_token')
       if (token) {
         headers.set('authorization', `Bearer ${token}`)
       }
@@ -31,7 +27,18 @@ export const authApi = createApi({
         body: credentials,
       }),
     }),
+    checkToken: build.query({
+      query: () => ({
+        url: 'token',
+        method: 'GET',
+      })
+    }),
+    
   }),
 })
 
-export const { useSignInMutation, useSignUpMutation } = authApi
+export const { 
+  useSignInMutation, 
+  useSignUpMutation, 
+  useCheckTokenQuery 
+} = authApi

@@ -1,6 +1,6 @@
 
 import { Box } from "@chakra-ui/react"
-import Filter from "./components/filter"
+import Filter from "./components/Filter"
 import { Heading } from "@chakra-ui/react"
 
 

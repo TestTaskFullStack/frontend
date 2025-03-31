@@ -4,13 +4,14 @@ import { SOCKET_EVENTS } from '../../config/constants';
 
 
 
+
 const socket = createSocket();
 
 const createSocketQuery = (event, emitEvent = null) => ({
     queryFn: () => ({ data: null }),
     async onCacheEntryAdded(arg, { updateCachedData, cacheDataLoaded, cacheEntryRemoved }) {
         try {
-            await cacheDataLoaded;
+            await cacheDataLoaded; 
 
             if (emitEvent) {
                 socket.emit(emitEvent, arg);

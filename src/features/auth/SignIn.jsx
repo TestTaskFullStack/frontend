@@ -4,14 +4,13 @@ import CardAuth from "./components/cardAuth"
 import { Alert, Box, Field, Input, Stack } from "@chakra-ui/react"
 import { usernameValidation } from "../../lib/validation"
 import { useSignInMutation } from "../../services/auth"
-import useRedirect from "../../hooks/useRedirect"
 import { useEffect } from "react"
 import { Toaster } from "../../components/ui/toaster"
 import useToasterError from "./hooks/useToasterError"
-
+import { useNavigate } from "react-router-dom"
 const SignIn = () => {
     const [signIn, { isError, error, isSuccess, data }] = useSignInMutation()
-
+    const navigate = useNavigate()
     const {
         handleSubmit,
         register,
@@ -24,13 +23,14 @@ const SignIn = () => {
     }
 
 
-    useRedirect(isSuccess, '/')
     useToasterError(isError, error)
     useEffect(() => {
         if (isSuccess) {
             localStorage.setItem("auth_token", data.accessToken)
+            navigate('/')  
+            window.location.reload();
         }
-    }, [data, isSuccess, isError, error])
+    }, [data, isSuccess, isError, error, navigate])
     
 
 

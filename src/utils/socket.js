@@ -1,7 +1,7 @@
 import io from 'socket.io-client'
 import { getToken } from './auth'
 
-export const createSocket = () => {
+export const createSocket =  () => {
     return io(import.meta.env.VITE_BACKEND_URL, {
         transports: ['websocket'],
         auth: {

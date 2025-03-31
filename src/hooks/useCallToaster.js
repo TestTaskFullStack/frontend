@@ -10,7 +10,7 @@ const useCallToaster = (event, refetch) => {
             refetch && refetch()
             setTimeout(() => {
                 toaster.create({
-                    title: event && event.message || "Помилка при створенні гри",
+                    title: event && event.message || "Щось пішло не так",
                     type: event.success ? "success" : "error",
                     description: event && event.description || "", 
                 })

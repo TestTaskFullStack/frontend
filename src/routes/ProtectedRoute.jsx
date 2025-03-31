@@ -9,10 +9,11 @@ const ProtectedRoute = ({ children }) => {
     const { data: onlineUsers } = useGetOnlineUsersQuery();
     const { data: event } = useListenUserAchievementEventQuery()
     useCallToaster(event)
-    console.log(onlineUsers)
 
     if (isLoading) {
-        return <div>Loading...</div>
+        return <Box display={"flex"} flexDirection={"column"}  alignItems={"center"} justifyContent={"center"} w={"96vw"} h={"96vh"} >
+             <span>Завантаження....</span>
+        </Box>
     }
 
     if (!isAuthenticated) {

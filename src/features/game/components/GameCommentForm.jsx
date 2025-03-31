@@ -18,7 +18,7 @@ const GameCommentForm = () => {
         <Box mt="10px">
             <form onSubmit={handleSubmit}>
                 <GameTextArea placeholder="Введіть ваш коментар"  setValue={setComment} comment={comment}   />
-                <Button  color={"white"} border={"1px solid #409c15"} _hover={{  bgColor: "#409c15"  }} _active={{ bgColor: "#409c15" }} type="submit">Send</Button>
+                <Button  color={"white"} border={"1px solid #409c15"} _hover={{  bgColor: "#409c15"  }} _active={{ bgColor: "#409c15" }} type="submit">Відправити</Button>
             </form>
         </Box>
     )
